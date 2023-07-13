@@ -10,13 +10,14 @@ _start:
     xor bx, bx
     
     mov ah, 0
-    mov bh, 13h
+    mov al, 12h
     int 10h
-
-    mov ah, 0xb
+    
+    mov bl, 0xf
+    
+    mov ah, 0eh
     mov bh, 0
-    mov bl, 10
-    int 10h
+    mov bl, 2
     
     mov ah, 0x0e
     mov si, message1

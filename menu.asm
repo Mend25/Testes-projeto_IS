@@ -13,6 +13,10 @@ _start:
     mov bh, 13h
     int 10h
     
+    mov ah, 0eh
+    mov bh, 0
+    mov bl, 2
+    
     mov ah, 0x0e
     mov si, message1
     call print_loop

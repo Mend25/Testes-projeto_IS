@@ -8,8 +8,12 @@ _start:
     xor ax, ax
     xor si, si
     xor bx, bx
+    
+    mov ah, 0
+    mov bh, 13h
+    int 10h
+    
     mov ah, 0x0e
-    mov bl, 0xf
     mov si, message1
     call print_loop
     xor ax, ax

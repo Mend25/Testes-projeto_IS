@@ -7,7 +7,6 @@ message2 db "Instructions", 0
 _start:
     xor ax, ax
     xor si, si
-    xor dx, dx
     xor bx, bx
     
     mov ah, 0
@@ -24,9 +23,7 @@ _start:
     mov si, message1
     call print_loop
     xor ax, ax
-    mov ah, 2
-    mov dh, 1
-    mov dl, 0
+    call endl
     
     xor si, si
     mov si, message2

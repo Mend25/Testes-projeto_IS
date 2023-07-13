@@ -10,8 +10,10 @@ _start:
     xor bx, bx
     
     mov ah, 0
-    mov bh, 13h
+    mov al, 12h
     int 10h
+    
+    mov bl, 0xf
     
     mov ah, 0eh
     mov bh, 0

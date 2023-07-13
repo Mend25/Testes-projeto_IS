@@ -15,7 +15,7 @@ _start:
 
     mov ah, 0xb
     mov bh, 0
-    mov bl, 2
+    mov bl, 10
     int 10h
     
     mov ah, 0x0e

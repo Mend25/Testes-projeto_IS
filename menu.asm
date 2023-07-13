@@ -27,7 +27,6 @@ _start:
     mov ah, 2
     mov dh, 1
     mov dl, 0
-    int 10h
     
     xor si, si
     mov si, message2

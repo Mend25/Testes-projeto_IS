@@ -1,8 +1,8 @@
 org 0x7c00
 jmp _start
 
-message1 db "Pressione enter para iniciar", 0
-message2 db "Instruções", 0
+message1 db "Press enter to start", 0
+message2 db "Instructions", 0
 
 _start:
     xor ax, ax

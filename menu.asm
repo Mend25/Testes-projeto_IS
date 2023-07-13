@@ -22,8 +22,6 @@ _start:
     mov ah, 0x0e
     mov si, message1
     call print_loop
-    xor ax, ax
-    call endl
     
     xor si, si
     mov si, message2
@@ -60,3 +58,4 @@ done:
 
 times 510 - ($ - $$) db 0
 dw 0xaa55
+

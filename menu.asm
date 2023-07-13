@@ -1,6 +1,9 @@
 org 0x7c00
 jmp _start
 
+message1 times 20 db 0 
+message2 times 20 db 0 
+
 message1 db "Press enter to start", 10, 13
 message2 db "Instructions", 0
 

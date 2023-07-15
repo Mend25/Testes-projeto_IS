@@ -277,25 +277,22 @@ put_score:
     mov ah, 0x0e
     int 10h
     ret
-prints:
-    lodsb
-    cmp al, 0
-    je .done_l
-    call put_score
-    jmp prints
-    
-    .done_l:
-        ret 
 
 build_score:
     xor si, si
     xor ax, ax
     mov si, score_name
-    call prints
+    call .prints
 
+    .prints:
+	    lodsb
+	    cmp al, 0
+	    je .done_l
+	    call put_score
+	    jmp prints
     
-
-    ret
+    .done_l:
+        ret 
 
 clear_screen:
     mov ah, 0

@@ -293,11 +293,7 @@ build_score:
     mov si, score_name
     call prints
 
-    mov ax, 3
-    add ax, '0'
-    xor si, si
-    mov si, ax
-    ;call prints
+    
 
     ret
 

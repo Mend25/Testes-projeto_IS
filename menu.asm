@@ -50,7 +50,6 @@ waitStart:
     jmp waitStart
 
     .done:
-        cmp 
         ret
 
 instructions:

@@ -1,10 +1,10 @@
 org 0x7c00
-jmp menu
+jmp start
 
 message1 db "             SOCCER PONG", 10, 13, 10, 13, 10, 13, 10, 13, "        Press ENTER to start", 10, 13, "        Press SPACE to instructions",0
 message2 db "This is one of the hardest pong games in world history!!!", 10, 13,"Try to survive the longest!!!", 10, 13, 10, 13, 10, 13, 10, 13, "        How to play:", 10, 13, 10, 13, 10, 13, "        W -> up", 10, 13, 10, 13, "        S -> down", 10, 13, 10, 13, 10, 13, 10, 13, 10, 13, "Press SPACE to menu",0
 
-menu:
+start:
     mov ah, 0 
     mov al, 13h
     int 10h

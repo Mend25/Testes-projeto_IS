@@ -289,7 +289,7 @@ build_score:
 	    cmp al, 0
 	    je .done_l
 	    call put_score
-	    jmp prints
+	    jmp .prints
     
     .done_l:
         ret 

@@ -282,7 +282,7 @@ build_score:
     xor si, si
     xor ax, ax
     mov si, score_name
-    call .prints
+    jmp .prints
 
     .prints:
 	    lodsb

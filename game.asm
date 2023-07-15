@@ -288,10 +288,9 @@ prints:
         ret 
 
 build_score:
+    xor si, si
     mov si, score_name
     call prints
-    call prints
-
 
     mov ax, counter
     add ax, '0'

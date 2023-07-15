@@ -278,21 +278,23 @@ put_score:
     int 10h
     ret
 
+prints:
+    lodsb
+    cmp al, 0
+    je .done_l
+    call put_score
+    jmp prints
+
+    .done_l:
+        ret 
+
 build_score:
     xor si, si
     xor ax, ax
     mov si, score_name
-    jmp .prints
+    call prints
 
-    .prints:
-	    lodsb
-	    cmp al, 0
-	    je .done_l
-	    call put_score
-	    jmp .prints
-    
-    .done_l:
-        ret 
+    ret
 
 clear_screen:
     mov ah, 0

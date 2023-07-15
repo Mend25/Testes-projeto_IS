@@ -79,7 +79,7 @@ instructions:
         cmp al, " "
         je menu
 
-        jmp waitButton
+        jmp .waitButton
 
 
 

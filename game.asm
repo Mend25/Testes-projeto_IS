@@ -295,7 +295,8 @@ build_score:
 
     mov ax, 3
     add ax, '0'
-    stosb
+    xor si, si
+    mov si, ax
     call prints
 
     ret

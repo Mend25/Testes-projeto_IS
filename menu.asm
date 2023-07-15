@@ -76,7 +76,7 @@ instructions:
         call getchar_m
 
         cmp al, " "
-        je menu
+        je start
 
         jmp .waitButton
 

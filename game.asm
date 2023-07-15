@@ -297,7 +297,7 @@ build_score:
     add ax, '0'
     xor si, si
     mov si, ax
-    call prints
+    ;call prints
 
     ret
 

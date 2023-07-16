@@ -5,10 +5,12 @@ game_loop:
     call update_first_bar
     xor al, al
     jmp game_loop
+
 machine:
     call update_second_bar
     call update_ball
     jmp game_loop
+
 reset:
     mov ax, [first_bar_posy]
     mov ax, 100
@@ -26,7 +28,9 @@ reset:
     mov bp, 200;posição x da bola
     mov bh, 0  ;flag de sentido y
     mov bl, 10  ;posição y da bola
+    ;mov [counter], 0
     call game_loop
+
 load_first_bar:
     mov si, flag
     mov dx, [first_bar_posy]
@@ -39,6 +43,7 @@ load_first_bar:
     sub dx, 16
     mov [first_bar_posy], dx
     ret
+
 load_second_bar:
     mov si, flag
     mov dx, [second_bar_posy]
@@ -51,6 +56,7 @@ load_second_bar:
     sub dx, 16
     mov [second_bar_posy], dx
     ret
+
 load_ball:
     mov si, cometa
     mov dh, 0
@@ -63,12 +69,14 @@ load_ball:
     sub bl, 16
     sub bp, 16
     ret
+
 print_first_bar:
 	lodsb
 	mov ah, 0ch
 	int 10h
 	
 	jmp .travel_by_image
+
     .travel_by_image:
         inc cx
         cmp cx, 16
@@ -80,6 +88,7 @@ print_first_bar:
         jne print_first_bar
         
         ret
+
 print_second_bar:
 	lodsb
     mov ah, 0ch
@@ -97,6 +106,7 @@ print_second_bar:
         jne print_second_bar
         
         ret
+
 print_ball:
 	lodsb
 	mov ah, 0ch
@@ -105,15 +115,16 @@ print_ball:
 	jmp .travel_by_image
     .travel_by_image:
         inc cx
-        cmp cx, bp;alterar
+        cmp cx, bp
         jne print_ball
         
-        mov cx, [prev_ball_pos_x];alterar
+        mov cx, [prev_ball_pos_x]
         inc dl
         cmp dl, bl
         jne print_ball
         
         ret
+
 update_first_bar:    
     call getchar
     cmp al, 's'
@@ -121,25 +132,29 @@ update_first_bar:
     
     cmp al, 'w'
     je .up 
+
     .down:
         mov ax, [first_bar_posy]
         cmp ax, 180
         jb .move_down
         ret
+
     .up:
         mov ax, [first_bar_posy]
-        cmp ax, 0
+        cmp ax, 20
         ja .move_up
         ret
+
     .move_up:
-        sub ax, 5
+        sub ax, 3
         mov [first_bar_posy], ax
         ret
     
     .move_down:
-        add ax, 5
+        add ax, 3
         mov [first_bar_posy], ax
         ret
+
 update_second_bar:
     mov al, bl
     mov ah, 0
@@ -148,25 +163,26 @@ update_second_bar:
     
     cmp [second_bar_posy], ax
     ja .up_s
+
     .done_s:
         ret
+
     .up_s:
         mov ax, [second_bar_posy]
-        sub ax, 5
+        sub ax, 10
         mov [second_bar_posy], ax
+
         .update_s:
             call clear_screen
             call load_first_bar
             call load_second_bar
             call load_ball
-            call build_score
-            call prints
-            ;call put_score
 
         jmp update_second_bar
+
     .down_s:
         mov ax, [second_bar_posy]
-        add ax, 5
+        add ax, 10
         mov [second_bar_posy], ax
         
         .update_s_:
@@ -174,22 +190,22 @@ update_second_bar:
             call load_first_bar
             call load_second_bar
             call load_ball
-            call build_score
-            call prints
-            ;call put_score
         
         jmp update_second_bar
+
 update_ball:
     .axis_x:
         cmp bp, 280
         ja .goleft
         cmp bp, 15
         jbe .goright
+
     .axis_y:
         cmp bl, 180
         ja .goup
-        cmp bl, 0
+        cmp bl, 20
         jbe .godown
+
     .ball_movement:
         .movement_x:
             cmp di, 1
@@ -197,15 +213,18 @@ update_ball:
             cmp di, 0
             je .left_ball
             ret
+
         .movement_y:
             cmp bh, 1
             je .up_ball
             cmp bh, 0
             je .down_ball
             ret
+
     .goleft:
         mov di, 0
         jmp .axis_y
+
     .goright:
         ;garante o maior
         xor ax, ax
@@ -214,69 +233,121 @@ update_ball:
         cmp cl, dl
         jbe .case_1
         jmp .case_2
+
         .collision:
             cmp al, 20
             jbe .change_sense ;ver se bateu na barra esquerda
+
         ;marca o ponto
         sub bp, 5
+        cmp bh, 0
+        je .mov_y
+        sub bl, 5
+
         call .update_movement
-        sub bp, 5
-        call .update_movement
+        
+        .continue:
+            sub bp, 5
+            cmp bh, 0
+            je .mov_y
+            sub bl, 5
+
+            call .update_movement
+            
         call delay1s
-        jmp reset
-    
+
+        ;jmp reset
+        jmp $
+
+        .mov_y:
+            add bl, 5
+            jmp .continue
+
     .goup:
         mov bh, 1
         jmp .ball_movement
+        
     .godown:
         mov bh, 0
         jmp .ball_movement
+
     .up_ball:
-        sub bl, 5
+        sub bl, 10
         jmp .update_movement
+
     .down_ball:
-        add bl, 5
+        add bl, 10
         jmp .update_movement
+
     .left_ball:
-        sub bp, 5
+        sub bp, 10
         jmp .movement_y
+
     .right_ball:
-        add bp, 5
+        add bp, 10
         jmp .movement_y
     
     .case_1:
         mov al, bl
         sub al, [first_bar_posy]
         jmp .collision
+
     .case_2:
         mov al, [first_bar_posy]
         sub al, bl
         jmp .collision
+
     .change_sense:
         mov di, 1
+        call update_score
         jmp .axis_y  
+
     .update_movement:
         call clear_screen
         call load_first_bar
         call load_second_bar
         call load_ball
 
-        call build_score
-        call prints
-
         call delay
 
-        
-        ;call put_score
         ret
+
 getchar:
     mov ah, 0
 	int 16h
     ret
+
 put_score:
     mov ah, 0x0e
+    mov cl, bl
+    mov bl, 0xf
     int 10h
+    mov bl, cl
     ret
+
+build_score:
+    mov si, score_name
+    call prints
+
+    mov ax, [counter]
+    mov dx, 0
+    mov cx, 10
+    div cx
+    add ax, '0'
+
+    call put_score
+    
+    sub ax, '0'
+    mov ax, dx
+    add ax, '0'
+    call put_score
+
+    ret
+
+update_score:
+    mov ax, [counter]
+    inc ax
+    mov [counter], ax
 
 prints:
     lodsb
@@ -284,34 +355,30 @@ prints:
     je .done_l
     call put_score
     jmp prints
-
+    
     .done_l:
         ret 
-
-build_score:
-    xor si, si
-    xor ax, ax
-    mov si, score_name
-    call prints
-
-    ret
 
 clear_screen:
     mov ah, 0
 	mov al, 13h
 	int 10h
+    call build_score
     ret
+
 delay:
 	mov cx, 01h
     mov dx, 0A28h
     mov ah, 86h
     int 15h
     ret
+
 delay1s:
   mov cx, 0fh
   mov dx, 4240h
   mov ah, 86h
   int 15h
   ret
+
 done:
     jmp $

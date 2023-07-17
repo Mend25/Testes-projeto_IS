@@ -115,11 +115,9 @@ print_ball:
 	jmp .travel_by_image
     .travel_by_image:
         inc cx
-        cmp cx, bp;alterar
         cmp cx, bp
         jne print_ball
         
-        mov cx, [prev_ball_pos_x];alterar
         mov cx, [prev_ball_pos_x]
         inc dl
         cmp dl, bl
@@ -143,19 +141,16 @@ update_first_bar:
 
     .up:
         mov ax, [first_bar_posy]
-        cmp ax, 0
         cmp ax, 20
         ja .move_up
         ret
 
     .move_up:
-        sub ax, 5
         sub ax, 3
         mov [first_bar_posy], ax
         ret
     
     .move_down:
-        add ax, 5
         add ax, 3
         mov [first_bar_posy], ax
         ret
@@ -174,7 +169,6 @@ update_second_bar:
 
     .up_s:
         mov ax, [second_bar_posy]
-        sub ax, 5
         sub ax, 10
         mov [second_bar_posy], ax
 
@@ -183,15 +177,11 @@ update_second_bar:
             call load_first_bar
             call load_second_bar
             call load_ball
-            call build_score
-            call prints
-            ;call put_score
 
         jmp update_second_bar
 
     .down_s:
         mov ax, [second_bar_posy]
-        add ax, 5
         add ax, 10
         mov [second_bar_posy], ax
         
@@ -200,9 +190,6 @@ update_second_bar:
             call load_first_bar
             call load_second_bar
             call load_ball
-            call build_score
-            call prints
-            ;call put_score
         
         jmp update_second_bar
 
@@ -216,7 +203,6 @@ update_ball:
     .axis_y:
         cmp bl, 180
         ja .goup
-        cmp bl, 0
         cmp bl, 20
         jbe .godown
 
@@ -259,8 +245,6 @@ update_ball:
         sub bl, 5
 
         call .update_movement
-        sub bp, 5
-        call .update_movement
         
         .continue:
             sub bp, 5
@@ -271,8 +255,6 @@ update_ball:
             call .update_movement
             
         call delay1s
-        jmp reset
-    
 
         ;jmp reset
         jmp $
@@ -290,22 +272,18 @@ update_ball:
         jmp .ball_movement
 
     .up_ball:
-        sub bl, 5
         sub bl, 10
         jmp .update_movement
 
     .down_ball:
-        add bl, 5
         add bl, 10
         jmp .update_movement
 
     .left_ball:
-        sub bp, 5
         sub bp, 10
         jmp .movement_y
 
     .right_ball:
-        add bp, 5
         add bp, 10
         jmp .movement_y
     
@@ -330,13 +308,8 @@ update_ball:
         call load_second_bar
         call load_ball
 
-        call build_score
-        call prints
-
         call delay
 
-        
-        ;call put_score
         ret
 
 getchar:
@@ -382,18 +355,9 @@ prints:
     je .done_l
     call put_score
     jmp prints
-
     
     .done_l:
         ret 
-
-build_score:
-    xor si, si
-    xor ax, ax
-    mov si, score_name
-    call prints
-
-    ret
 
 clear_screen:
     mov ah, 0
